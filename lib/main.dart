@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +26,22 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [
+    Icon(
+      Icons.check,
+      color: Colors.green,
+    ),
+    Icon(
+      Icons.close,
+      color: Colors.red,
+    ),
+  ];
+  int questionNumber = 0;
+  List<Question> questionBank = [
+    Question(questionText: '地球是圆的吗?', questionAnswer: true),
+    Question(questionText: '原子弹比氢弹厉害吗?', questionAnswer: false),
+    Question(questionText: '土星比地球大吗?', questionAnswer: true),
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -61,6 +78,21 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool questionAnswer =
+                    questionBank[questionNumber].questionAnswer;
+                if (questionAnswer) {
+                  print('回答正确');
+                } else {
+                  print('回答错误');
+                }
+                setState(() {
+                  questionNumber++;
+                  scoreKeeper.add(Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                });
+
                 //The user picked true.
               },
             ),
@@ -79,21 +111,23 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool questionAnswer =
+                    questionBank[questionNumber].questionAnswer;
+                ;
+                if (!questionAnswer) {
+                  print('回答正确');
+                } else {
+                  print('回答错误');
+                }
+                setState(() {
+                  scoreKeeper.remove(0);
+                });
                 //The user picked false.
               },
             ),
           ),
         ),
-        Row(children: <Widget>[
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-          Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
-        ])
+        Row(children: scoreKeeper)
       ],
     );
   }
