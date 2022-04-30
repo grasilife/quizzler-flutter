@@ -37,7 +37,26 @@ class _QuizPageState extends State<QuizPage> {
       color: Colors.red,
     ),
   ];
-  int questionNumber = 0;
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getquestionAnswer();
+    setState(() {
+      if (correctAnswer == userPickedAnswer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+        print('回答正确');
+      } else {
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+        print('回答错误');
+      }
+      quizBrain.nextQuestion();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,25 +93,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool questionAnswer = quizBrain.getquestionAnswer();
-
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
-
-                if (questionAnswer) {
-                  print('回答正确');
-                } else {
-                  print('回答错误');
-                }
-                // setState(() {
-                //   questionNumber++;
-                //   scoreKeeper.add(Icon(
-                //     Icons.check,
-                //     color: Colors.green,
-                //   ));
-                // });
-
+                checkAnswer(true);
                 //The user picked true.
               },
             ),
@@ -111,15 +112,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool questionAnswer = quizBrain.getquestionAnswer();
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
-                if (!questionAnswer) {
-                  print('回答正确');
-                } else {
-                  print('回答错误');
-                }
+                checkAnswer(false);
               },
             ),
           ),
