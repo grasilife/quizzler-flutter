@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'quiz_brain.dart';
 
+QuizBrain quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -37,11 +38,6 @@ class _QuizPageState extends State<QuizPage> {
     ),
   ];
   int questionNumber = 0;
-  List<Question> questionBank = [
-    Question(questionText: '地球是圆的吗?', questionAnswer: true),
-    Question(questionText: '原子弹比氢弹厉害吗?', questionAnswer: false),
-    Question(questionText: '土星比地球大吗?', questionAnswer: true),
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +50,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionBank[questionNumber].questionText,
+                quizBrain.getQuestionText(questionNumber),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -79,19 +75,19 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 bool questionAnswer =
-                    questionBank[questionNumber].questionAnswer;
+                    quizBrain.getquestionAnswer(questionNumber);
                 if (questionAnswer) {
                   print('回答正确');
                 } else {
                   print('回答错误');
                 }
-                setState(() {
-                  questionNumber++;
-                  scoreKeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                });
+                // setState(() {
+                //   questionNumber++;
+                //   scoreKeeper.add(Icon(
+                //     Icons.check,
+                //     color: Colors.green,
+                //   ));
+                // });
 
                 //The user picked true.
               },
@@ -112,17 +108,12 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 bool questionAnswer =
-                    questionBank[questionNumber].questionAnswer;
-                ;
+                    quizBrain.getquestionAnswer(questionNumber);
                 if (!questionAnswer) {
                   print('回答正确');
                 } else {
                   print('回答错误');
                 }
-                setState(() {
-                  scoreKeeper.remove(0);
-                });
-                //The user picked false.
               },
             ),
           ),
@@ -132,9 +123,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
